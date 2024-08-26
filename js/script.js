@@ -5,6 +5,9 @@ document.addEventListener("DOMContentLoaded", function () {
   const emailError = document.querySelector("#emailError");
   const passwordError = document.querySelector("#passwordError");
 
+  // E-posta doğrulama için regex
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
   form.addEventListener("submit", async function (event) {
     event.preventDefault(); // Formun varsayılan gönderimini engelle
 
@@ -19,6 +22,12 @@ document.addEventListener("DOMContentLoaded", function () {
     if (!email || !password) {
       if (!email) emailError.textContent = "E-posta alanı boş bırakılamaz.";
       if (!password) passwordError.textContent = "Şifre alanı boş bırakılamaz.";
+      return;
+    }
+
+    // E-posta formatı kontrolü
+    if (!emailRegex.test(email)) {
+      emailError.textContent = "Geçerli bir e-posta adresi giriniz.";
       return;
     }
 
@@ -91,6 +100,27 @@ document.addEventListener("DOMContentLoaded", function () {
       window.location.href = "/dashboard.html"; // Giriş sonrası yönlendirme URL'si
     } catch (error) {
       alert(error.message); // Hata mesajını göster
+    }
+  });
+});
+
+//Password gizle göster için
+document.addEventListener("DOMContentLoaded", function () {
+  const passwordInput = document.getElementById("password");
+  const togglePassword = document.getElementById("togglePassword");
+
+  togglePassword.addEventListener("click", function (event) {
+    event.preventDefault(); // Linkin varsayılan davranışını engelle
+
+    // Şifre alanının tipini değiştir
+    if (passwordInput.type === "password") {
+      passwordInput.type = "text";
+      // Simgeyi değiştirme (opsiyonel)
+      togglePassword.setAttribute("aria-label", "Hide password");
+    } else {
+      passwordInput.type = "password";
+      // Simgeyi değiştirme (opsiyonel)
+      togglePassword.setAttribute("aria-label", "Show password");
     }
   });
 });
