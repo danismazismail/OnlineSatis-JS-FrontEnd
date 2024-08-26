@@ -6,19 +6,21 @@
   <body>
     <div class="page page-center">
       <div class="container container-tight py-4">
-        <div class="text-center mb-4">Logo</div>
+        <div class="text-center mb-4"></div>
         <div class="card card-md">
           <div class="card-body">
             <h2 class="h2 text-center mb-4">Hesabınıza giriş yapın.</h2>
-            <form>
+            <form id="loginForm">
               <div class="mb-3">
                 <label class="form-label">Email adresi</label>
                 <input
+                  id="email"
                   type="email"
                   class="form-control"
-                  placeholder="your@email.com"
+                  placeholder="email@email.com"
                   autocomplete="off"
                 />
+                <span id="emailError" class="text-danger"></span>
               </div>
               <div class="mb-2">
                 <label class="form-label">
@@ -29,6 +31,7 @@
                 </label>
                 <div class="input-group input-group-flat">
                   <input
+                    id="password"
                     type="password"
                     class="form-control"
                     placeholder="Şifre giriniz."
@@ -67,6 +70,7 @@
                     </a>
                   </span>
                 </div>
+                <span id="passwordError" class="text-danger"></span>
               </div>
               <div class="mb-2">
                 <label class="form-check">
@@ -128,5 +132,6 @@
         </div>
       </div>
     </div>
+    <script src="js/script.js"></script>
   </body>
 </html>
