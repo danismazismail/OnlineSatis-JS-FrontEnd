@@ -22,17 +22,24 @@ document.addEventListener("DOMContentLoaded", function () {
     if (!email || !password) {
       if (!email) emailError.textContent = "E-posta alanı boş bırakılamaz.";
       if (!password) passwordError.textContent = "Şifre alanı boş bırakılamaz.";
+      setTimeout(() => {
+        emailError.textContent = "";
+        passwordError.textContent = "";
+      }, 3000); // 3 saniye sonra uyarıyı temizle
       return;
     }
 
     // E-posta formatı kontrolü
     if (!emailRegex.test(email)) {
       emailError.textContent = "Geçerli bir e-posta adresi giriniz.";
+      setTimeout(() => {
+        emailError.textContent = "";
+      }, 3000); // 3 saniye sonra uyarıyı temizle
       return;
     }
 
     try {
-      const response = await fetch("https://localhost:7203/api/Account/Login", {
+      const response = await fetch("http://localhost:5198/api/Account/Login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -64,40 +71,23 @@ document.addEventListener("DOMContentLoaded", function () {
         }
         return;
       }
-      //   if (!response.ok) {
-      //     const errorData = await response.json();
-      //     let errorMessage = "Bir hata oluştu.";
+      const result = await response.json();
 
-      //     if (response.status === 422) {
-      //       // API'den dönen hata mesajlarını işleyin
-      //       if (errorData.message) {
-      //         errorMessage = errorData.message;
-      //       } else if (errorData.Email) {
-      //         errorMessage = errorData.Email.join(" ");
-      //       } else if (errorData.Password) {
-      //         errorMessage = errorData.Password.join(" ");
-      //       }
-      //     } else if (response.status === 401) {
-      //       errorMessage = "Yetkisiz giriş.";
-      //     }
+      // `data.Data`'yı kontrol et
+      if (result.twoFactorRequired === true) {
+        // İki faktörlü doğrulama gereklidir
+        window.location.href = "http://127.0.0.1:5500/two-steps.html";
+        localStorage.setItem("userEmail", email);
+      }
 
-      //     alert(errorMessage); // Hata mesajını göster
-      //     return;
-      //   }
-
-      const data = await response.json();
-      console.log("API yanıtı:", data); // Yanıtı konsola yazdırın
-      const token = data.Token;
+      // İki faktörlü doğrulama gerekmiyor
+      const token = result.data.token;
 
       // Token'ı localStorage veya cookie'ye kaydedin (isteğe bağlı)
       localStorage.setItem("authToken", token);
       sessionStorage.setItem("authToken", token);
-
-      console.log("Token:", localStorage.getItem("authToken"));
-      console.log("Token:", sessionStorage.getItem("authToken"));
-
-      // Başarı durumunda, kullanıcıyı başka bir sayfaya yönlendirin
-      window.location.href = "/dashboard.html"; // Giriş sonrası yönlendirme URL'si
+      localStorage.setItem("userEmail", email);
+      window.location.href = "http://127.0.0.1:5500/users.html";
     } catch (error) {
       alert(error.message); // Hata mesajını göster
     }

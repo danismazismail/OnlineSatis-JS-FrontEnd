@@ -1,16 +1,18 @@
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <title>New Password</title>
     <link href="./css/tabler.min.css?1720208459" rel="stylesheet" />
     <link href="./css/twosteps.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="./js/two-steps.js" defer></script>
   </head>
   <body>
     <div class="verification-container">
       <div class="verification-box">
         <div class="logo">
-          <!-- <img src="your-logo.png" alt="Logo" /> -->
-          <!-- <div class="text-center mb-2">Logo</div> -->
+          <!-- Logo burada -->
           <div class="mb-4">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -34,12 +36,12 @@
         <p>Gönderdiğimiz doğrulama kodunu girin</p>
         <p class="masked-mail"></p>
         <div class="input-group">
-          <input type="text" maxlength="1" />
-          <input type="text" maxlength="1" />
-          <input type="text" maxlength="1" />
-          <input type="text" maxlength="1" />
-          <input type="text" maxlength="1" />
-          <input type="text" maxlength="1" />
+          <input type="text" maxlength="1" id="code1" />
+          <input type="text" maxlength="1" id="code2" />
+          <input type="text" maxlength="1" id="code3" />
+          <input type="text" maxlength="1" id="code4" />
+          <input type="text" maxlength="1" id="code5" />
+          <input type="text" maxlength="1" id="code6" />
         </div>
         <button class="submit-btn">Gönder</button>
         <div class="resend-options">
