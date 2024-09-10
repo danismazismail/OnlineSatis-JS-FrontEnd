@@ -1,70 +1,169 @@
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <title>Sign up</title>
     <link href="./css/tabler.min.css?1720208459" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   </head>
   <body>
     <div class="page page-center">
       <div class="container container-tight py-4">
-        <form class="card card-md">
+        <div class="text-center mb-4"></div>
+        <div class="card card-md">
           <div class="card-body">
-            <h2 class="card-title text-center mb-4">Yeni Hesap Oluştur</h2>
-            <div class="mb-3">
-              <label class="form-label">İsim</label>
-              <input
-                type="text"
-                class="form-control"
-                placeholder="Adınızı giriniz."
-              />
-            </div>
-            <div class="mb-3">
-              <label class="form-label">Soyisim</label>
-              <input
-                type="text"
-                class="form-control"
-                placeholder="Soyisiminizi giriniz."
-              />
-            </div>
-            <div class="mb-3">
-              <label class="form-label">Telefon Numarası</label>
-              <input
-                type="phone"
-                class="form-control"
-                placeholder="Telefon Numaranızı giriniz."
-              />
-            </div>
-            <div class="mb-3">
-              <label class="form-label">Email adresi</label>
-              <input
-                type="email"
-                class="form-control"
-                placeholder="Email adresinizi giriniz."
-              />
-            </div>
-            <div class="mb-3">
-              <label class="form-label">Şifre</label>
-              <div class="input-group input-group-flat">
+            <h2 class="h2 text-center mb-4">Yeni Hesap Oluştur</h2>
+            <form id="registerForm">
+              <div class="mb-3">
+                <label class="form-label">İsim</label>
                 <input
-                  type="password"
+                  type="text"
+                  id="name"
+                  name="name"
                   class="form-control"
-                  placeholder="Şifrenizi giriniz"
-                  autocomplete="off"
+                  placeholder="Adınızı giriniz."
                 />
+                <span id="nameError" class="text-danger"></span>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Soyisim</label>
+                <input
+                  type="text"
+                  id="surname"
+                  name="surname"
+                  class="form-control"
+                  placeholder="Soyisiminizi giriniz."
+                />
+                <span id="surnameError" class="text-danger"></span>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">TC Kimlik No</label>
+                <input
+                  type="text"
+                  id="tc-kimlik-no"
+                  name="tc-kimlik-no"
+                  class="form-control"
+                  placeholder="TC Kimlik Numaranızı giriniz."
+                  maxlength="11"
+                  pattern="\d{11}"
+                  title="Lütfen 11 haneli bir TC Kimlik No giriniz."
+                />
+                <span id="tcKimlikNoError" class="text-danger"></span>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Telefon Numarası</label>
+                <input
+                  type="phone"
+                  id="phone"
+                  name="phone"
+                  class="form-control"
+                  placeholder="Telefon Numaranızı giriniz."
+                />
+                <span id="phoneError" class="text-danger"></span>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Doğum Tarihi</label>
+                <input
+                  type="date"
+                  id="birthdate"
+                  name="birthdate"
+                  class="form-control"
+                  placeholder="Doğum tarihinizi giriniz."
+                />
+                <span id="birthdateError" class="text-danger"></span>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Email adresi</label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  class="form-control"
+                  placeholder="Email adresinizi giriniz."
+                />
+                <span id="emailError" class="text-danger"></span>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Şifre</label>
+                <div class="input-group input-group-flat">
+                  <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    class="form-control"
+                    placeholder="Şifrenizi giriniz"
+                    autocomplete="off"
+                  />
+                </div>
+                <span id="passwordError" class="text-danger"></span>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Şifre Tekrarı</label>
+                <div class="input-group input-group-flat">
+                  <input
+                    type="password"
+                    id="confirm-password"
+                    name="confirm-password"
+                    class="form-control"
+                    placeholder="Şifrenizi tekrar giriniz"
+                    autocomplete="off"
+                  />
+                </div>
+                <span id="confirmPasswordError" class="text-danger"></span>
+              </div>
+              <div class="form-footer">
+                <button type="submit" class="btn btn-primary w-100">
+                  Yeni Hesap Oluştur
+                </button>
+              </div>
+            </form>
+          </div>
+          <div class="hr-text">or</div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col">
+                <a href="#" class="btn w-100">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 48 48"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="icon text-google"
+                  >
+                    <path
+                      fill="#4285F4"
+                      d="M24 9.5c3.5 0 5.9 1.5 7.3 2.7l5.4-5.4C33.5 4.5 28.9 2 24 2 14.8 2 7.1 7.9 4.2 15.8l6.7 5.2C12.3 14.3 17.7 9.5 24 9.5z"
+                    ></path>
+                    <path
+                      fill="#34A853"
+                      d="M46.6 24.4C46.6 23.5 46.5 22.5 46.3 21.6H24v8.8h13.2c-0.6 3.4-2.5 6.3-5.4 8.2l6.8 5.2C42.4 39.9 46.6 32.8 46.6 24.4z"
+                    ></path>
+                    <path
+                      fill="#FBBC05"
+                      d="M9.8 29.1c-0.5-1.5-0.8-3-0.8-4.6s0.3-3.1 0.8-4.6l-6.7-5.2C1.1 17.8 0 21 0 24.5s1.1 6.7 3.1 9.7l6.7-5.1z"
+                    ></path>
+                    <path
+                      fill="#EA4335"
+                      d="M24 47.5c6.3 0 11.7-2.1 15.6-5.7l-6.8-5.2c-2.3 1.5-5.3 2.4-8.8 2.4-6.8 0-12.6-4.6-14.6-10.8l-6.7 5.2C7.2 41.8 14.9 47.5 24 47.5z"
+                    ></path>
+                  </svg>
+                  Google ile Kayıt Ol
+                </a>
               </div>
             </div>
-            <div class="form-footer">
-              <button type="submit" class="btn btn-primary w-100">
-                Yeni Hesap Oluştur
-              </button>
-            </div>
           </div>
-        </form>
+        </div>
         <div class="text-center text-secondary mt-3">
           Zaten bir hesabım var.
           <a href="./sign-in.html" tabindex="-1">Giriş Yap</a>
         </div>
       </div>
     </div>
+    <script src="js/register.js"></script>
   </body>
 </html>

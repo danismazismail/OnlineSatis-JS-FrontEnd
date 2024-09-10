@@ -1,7 +1,7 @@
 $(document).ready(function () {
   const $inputs = $(".input-group input");
   let email = ""; // E-posta adresini burada saklayacağız
-
+  const userEmail = localStorage.getItem("userEmail");
   // Inputlar arasında geçiş
   $inputs.on("keyup", function (e) {
     const value = $(this).val();
@@ -37,7 +37,7 @@ $(document).ready(function () {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            Email: email, // E-posta adresini kullanın
+            Email: localStorage.getItem("userEmail"), // E-posta adresini kullanın
             Code: code,
           }),
         }
@@ -75,13 +75,53 @@ $(document).ready(function () {
     setTimeout(() => $warning.hide(), 3000);
   }
 
-  // E-posta adresini almak için URL'den veya başka bir kaynaktan alın
-  const urlParams = new URLSearchParams(window.location.search);
-  email = urlParams.get("email"); // E-posta adresini URL'den alıyoruz
+  email = data.Email;
 
   // E-posta adresi mevcut değilse sayfayı yönlendir veya kullanıcıya uyarı göster
   if (!email) {
     alert("E-posta adresi mevcut değil. Lütfen tekrar giriş yapın.");
     window.location.href = "login.html"; // Giriş sayfasına yönlendir
   }
+  // E-posta adresi eşleşmiyor ise sayfayı yönlendir veya kullanıcıya uyarı göster
+  if (email === userEmail) {
+    alert("E-posta adresi eşleşmiyor. Lütfen tekrar giriş yapın.");
+    window.location.href = "login.html"; // Giriş sayfasına yönlendir
+  }
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+  document
+    .getElementById("resendCode")
+    .addEventListener("click", function (event) {
+      event.preventDefault(); // Linkin varsayılan davranışını engelle
+
+      var email = localStorage.getItem("userEmail"); // E-posta adresini buradan al
+
+      fetch("http://localhost:5198/api/Account/SendVerificationCodeAsync", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(email),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          // Başarı mesajını göster
+          Toastify({
+            text: "Kod gönderme başarılı. Lütfen mailinizi kontrol ediniz.",
+            duration: 3000, // Mesajın görünme süresi
+            backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)", // Başarı yeşili renk
+            close: true, // Kapama butonu
+          }).showToast();
+        })
+        .catch((error) => {
+          // Hata mesajını göster
+          Toastify({
+            text: "Kod gönderme sırasında bir hata oluştu. Lütfen tekrar deneyin.",
+            duration: 3000, // Mesajın görünme süresi
+            backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)", // Hata kırmızı-turuncu renk
+            close: true, // Kapama butonu
+          }).showToast();
+        });
+    });
 });

@@ -5,6 +5,10 @@
     <title>New Password</title>
     <link href="./css/tabler.min.css?1720208459" rel="stylesheet" />
     <link href="./css/twosteps.css" rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css"
+    />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="./js/two-steps.js" defer></script>
   </head>
@@ -45,10 +49,13 @@
         </div>
         <button class="submit-btn">Gönder</button>
         <div class="resend-options">
-          <p>Kodu almadınız mı? Tekrar almak için<a href="#">tıklayınız.</a></p>
-          <a href="#"></a>
+          <p>
+            Kodu almadınız mı? Tekrar almak için
+            <a href="#" id="resendCode">tıklayınız.</a>
+          </p>
         </div>
       </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.js"></script>
   </body>
 </html>

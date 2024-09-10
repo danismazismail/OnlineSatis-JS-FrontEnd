@@ -76,8 +76,9 @@ document.addEventListener("DOMContentLoaded", function () {
       // `data.Data`'yı kontrol et
       if (result.twoFactorRequired === true) {
         // İki faktörlü doğrulama gereklidir
-        window.location.href = "http://127.0.0.1:5500/two-steps.html";
         localStorage.setItem("userEmail", email);
+        window.location.href = "http://127.0.0.1:5500/two-steps.html";
+        return;
       }
 
       // İki faktörlü doğrulama gerekmiyor
@@ -111,6 +112,27 @@ document.addEventListener("DOMContentLoaded", function () {
       passwordInput.type = "password";
       // Simgeyi değiştirme (opsiyonel)
       togglePassword.setAttribute("aria-label", "Show password");
+    }
+  });
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+  const emailInput = document.getElementById("email");
+  const rememberMeCheckbox = document.querySelector(".form-check-input");
+
+  // Sayfa yüklendiğinde e-posta adresini kontrol et
+  const savedEmail = localStorage.getItem("savedEmail");
+  if (savedEmail) {
+    emailInput.value = savedEmail;
+    rememberMeCheckbox.checked = true; // Checkbox işaretlenmiş olarak göster
+  }
+
+  // Formu gönderirken e-posta adresini kaydet
+  document.getElementById("loginForm").addEventListener("submit", function () {
+    if (rememberMeCheckbox.checked) {
+      localStorage.setItem("savedEmail", emailInput.value);
+    } else {
+      localStorage.removeItem("savedEmail");
     }
   });
 });
