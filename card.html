@@ -20,6 +20,11 @@
 
     <link
       rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+
+    <link
+      rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/@docsearch/css@3"
     />
 
@@ -103,6 +108,12 @@
       .bd-mode-toggle .dropdown-menu .active .bi {
         display: block !important;
       }
+      .slider-area .single-slider {
+        background-image: url('/img/onlinesaissepet.png');
+        background-size: cover; /* Resmi kapsaması için */
+        background-position: center; /* Ortalanması için */
+        height: 400px; /* Yüksekliği ihtiyacınıza göre ayarlayın */
+    }
     </style>
   </head>
   <body>
@@ -247,17 +258,16 @@
                   </li>
                 </ul>
               </li>
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="card.html">
+                  <i class="fas fa-shopping-cart"></i> Sepet
+                </a>
+              </li>
             </ul>
-            <div class="d-lg-flex col-lg-3 justify-content-lg-end">
-              <!-- <button class="btn btn-primary">Button</button> -->
-              <a
-                id="navbar-custom"
-                class="btn btn-primary w-10"
-                href="http://127.0.0.1:5500/sign-in.html"
-              >
-                Giriş Yap
-              </a>
-            </div>
+            <div
+              id="user-container"
+              class="d-lg-flex col-lg-3 justify-content-lg-end"
+            ></div>
           </div>
         </div>
       </nav>
@@ -266,12 +276,12 @@
     <!-- slider Area Start-->
   <div class="slider-area ">
     <!-- Mobile Menu -->
-    <div class="single-slider slider-height2 d-flex align-items-center" data-background="/img/category.jpg">
+    <div class="single-slider slider-height2 d-flex align-items-center">
         <div class="container">
             <div class="row">
                 <div class="col-xl-12">
                     <div class="hero-cap text-center">
-                        <h2>Card List</h2>
+                      
                     </div>
                 </div>
             </div>
@@ -281,104 +291,43 @@
   <!-- slider Area End-->
 
   <!--================Cart Area =================-->
-  <section class="cart_area section_padding">
+  <form>
+  <section class="cart_area section_padding mt-5">
     <div class="container">
       <div class="cart_inner">
         <div class="table-responsive">
           <table class="table">
             <thead>
               <tr>
-                <th scope="col">Product</th>
-                <th scope="col">Price</th>
-                <th scope="col">Quantity</th>
-                <th scope="col">Total</th>
+                <th scope="col">Ürün Adı</th>
+                <th scope="col">Fiyatı</th>
+                <th scope="col">Adedi</th>
+                <th scope="col">Toplam</th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <td>
-                  <div class="media">
-                    <div class="d-flex">
-                      <img src="assets/img/arrivel/arrivel_1.png" alt="" />
-                    </div>
-                    <div class="media-body">
-                      <p>Minimalistic shop for multipurpose use</p>
-                    </div>
-                  </div>
-                </td>
-                <td>
-                  <h5>$360.00</h5>
-                </td>
-                <td>
-                  <div class="product_count">
-                    <span class="input-number-decrement"> <i class="ti-minus"></i></span>
-                    <input class="input-number" type="text" value="1" min="0" max="10">
-                    <span class="input-number-increment"> <i class="ti-plus"></i></span>
-                  </div>
-                </td>
-                <td>
-                  <h5>$720.00</h5>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <div class="media">
-                    <div class="d-flex">
-                      <img src="assets/img/arrivel/arrivel_2.png" alt="" />
-                    </div>
-                    <div class="media-body">
-                      <p>Minimalistic shop for multipurpose use</p>
-                    </div>
-                  </div>
-                </td>
-                <td>
-                  <h5>$360.00</h5>
-                </td>
-                <td>
-                  <div class="product_count">
-                      <span class="input-number-decrement"> <i class="ti-minus"></i></span>
-                      <input class="input-number" type="text" value="1" min="0" max="10">
-                      <span class="input-number-increment"> <i class="ti-plus"></i></span>
-                  </div>
-                </td>
-                <td>
-                  <h5>$720.00</h5>
-                </td>
-              </tr>
+            <tbody id="cart-items">
               <tr>
                 <td></td>
                 <td></td>
                 <td>
-                  <h5>Subtotal</h5>
+                  <h5>Ara Toplam</h5>
                 </td>
                 <td>
-                  <h5>$2160.00</h5>
+                  <h5 id="subTotal">$2160.00</h5>
                 </td>
               </tr>
               <tr class="shipping_area">
                 <td></td>
                 <td></td>
                 <td>
-                  <h5>Shipping</h5>
+                  <h5>Kargo Firmaları</h5>
                 </td>
                 <td>
                   <div class="shipping_box">
                     <ul class="list">
                       <li>
                         Flat Rate: $5.00
-                        <input type="radio" aria-label="Radio button for following text input">
-                      </li>
-                      <li>
-                        Free Shipping
-                        <input type="radio" aria-label="Radio button for following text input">
-                      </li>
-                      <li>
-                        Flat Rate: $10.00
-                        <input type="radio" aria-label="Radio button for following text input">
-                      </li>
-                      <li class="active">
-                        Local Delivery: $2.00
-                        <input type="radio" aria-label="Radio button for following text input">
+                        <input type="radio" name="shipping" aria-label="Radio button for following text input">
                       </li>
                     </ul>
                   </div>
@@ -388,10 +337,15 @@
           </table>
         </div>
       </div>
+      <div class="d-flex justify-content-end">
+        <button class="btn btn-success">Satın Al</button>
+      </div>
   </section>
   <!--================End Cart Area =================-->
 
+  
 
+</form>
 
     <div class="container">
       <footer
@@ -427,6 +381,194 @@
         </ul>
       </footer>
     </div>
+    <script>
+      function increaseQuantity() {
+        var quantityInput = document.getElementById("quantity");
+        quantityInput.value = parseInt(quantityInput.value) + 1;
+      }
+
+      function decreaseQuantity() {
+        var quantityInput = document.getElementById("quantity");
+        if (quantityInput.value > 1) {
+          quantityInput.value = parseInt(quantityInput.value) - 1;
+        }
+      }
+
+      document.addEventListener("DOMContentLoaded", function () {
+        // Kullanıcı e-posta bilgisi localStorage'da mevcut mu?
+        const userEmail = localStorage.getItem("userEmail");
+        const userContainer = document.getElementById("user-container");
+
+        // Eğer kullanıcı girişi yapılmışsa, dropdown'ı ekle
+        if (userEmail) {
+          userContainer.innerHTML = `
+                <div id="user-dropdown" class="dropdown">
+                    <a
+                        href="#"
+                        class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                    >
+                        <img
+                            alt=""
+                            class="rounded-circle me-2"
+                        />
+                        <strong>${userEmail}</strong>
+                    </a>
+                    <ul class="dropdown-menu text-small shadow">
+                        <li>
+                            <a class="dropdown-item" href="#">New project...</a>
+                        </li>
+                        <li><a class="dropdown-item" href="#">Settings</a></li>
+                        <li><a class="dropdown-item" href="logout.html">Ekranı Kitle</a></li>
+                        <li><hr class="dropdown-divider" /></li>
+                        <li><a class="dropdown-item" href="#">Sign out</a></li>
+                    </ul>
+                </div>
+            `;
+        } else {
+          // Eğer kullanıcı girişi yapılmamışsa, giriş butonunu ekle
+          userContainer.innerHTML = `
+                <div id="login-button">
+                    <a
+                        id="navbar-custom"
+                        class="btn btn-primary d-flex justify-content-end"
+                        href="http://127.0.0.1:5500/sign-in.html"
+                    >
+                        Giriş Yap
+                    </a>
+                </div>
+            `;
+        }
+      });
+
+      class Cart {
+        constructor() {
+          // localStorage'dan sepet verilerini al
+          this.items = JSON.parse(localStorage.getItem("cart")) || [];
+        }
+    
+        // Ürün ekleme
+        addProduct(product) {
+          const existingItemIndex = this.items.findIndex(
+            (item) => item.productCode === product.productCode
+          );
+    
+          const userEmail = localStorage.getItem("userEmail");
+    
+          if (existingItemIndex > -1) {
+            this.items[existingItemIndex].quantity += 1;
+            if (userEmail) {
+              this.items[existingItemIndex].cartOwnerEmail = userEmail;
+            }
+          } else {
+            this.items.push({
+              productCode: product.productCode,
+              productName: product.productName,
+              productPrice: product.productPrice,
+              cartOwnerEmail: userEmail,
+              quantity: 1,
+            });
+          }
+          this.saveCart();
+        }
+    
+        // localStorage'a sepeti kaydet
+        saveCart() {
+          localStorage.setItem("cart", JSON.stringify(this.items));
+        }
+    
+        // Sepeti sayfaya yükle
+        loadCart() {
+          const cartItemsContainer = document.getElementById('cart-items');
+          cartItemsContainer.innerHTML = ''; // Eski içerikleri temizle
+    
+          let totalPrice = 0;
+    
+          this.items.forEach((item) => {
+            const itemTotal = item.productPrice * item.quantity;
+            totalPrice += itemTotal;
+    
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>
+                  <div class="media">
+                    <div class="d-flex">
+                      <img src="assets/img/arrivel/arrivel_1.png" alt="" />
+                    </div>
+                    <div class="media-body">
+                      <p id="productName">${item.productName}</p>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <h5 id="productPrice">$${item.productPrice.toFixed(2)}</h5>
+                </td>
+                <td>
+                  <div class="product_count" style="display: flex; align-items: center;">
+                    <!-- Miktar Kontrolleri -->
+          <div class="quantity-controls" style="display: flex; align-items: center;">
+            <button
+              class="btn btn-outline-primary"
+              onclick="decreaseQuantity()"
+              style="margin-right: 5px;"
+            >
+              -
+            </button>
+            <input
+              type="number"
+              id="quantity"
+              value="${item.quantity}"
+              min="1"
+              class="form-control text-center"
+              style="width: 60px; margin: 0 5px;"
+            />
+            <button
+              class="btn btn-outline-primary"
+              onclick="increaseQuantity()"
+              style="margin-left: 5px;"
+            >
+              +
+            </button>
+            <button
+              class="btn btn-outline-danger"
+              style="margin-left: 15px;"
+            >
+              x
+            </button>
+          </div>
+                  </div>
+                </td>
+                <td>
+                  <h5 id="sumProductPrice">$${itemTotal.toFixed(2)}</h5>
+                </td>
+            `;
+            cartItemsContainer.appendChild(row);
+          });
+    
+          document.getElementById('cart-total').innerText = `Toplam: $${totalPrice.toFixed(2)}`;
+        }
+    
+        // Ürün silme
+        removeProduct(productCode) {
+          this.items = this.items.filter((item) => item.productCode !== productCode);
+          this.saveCart();
+          this.loadCart(); // Sepeti yeniden yükle
+        }
+      }
+    
+      // Sayfa açıldığında sepeti yükle
+      document.addEventListener('DOMContentLoaded', () => {
+        const cart = new Cart();
+        cart.loadCart();
+      });
+    
+      // Ürün silme fonksiyonu
+      function removeProduct(productCode) {
+        const cart = new Cart();
+        cart.removeProduct(productCode);
+      }
+    </script>
     <script src="../assets/dist/js/bootstrap.bundle.min.js"></script>
   </body>
 </html>

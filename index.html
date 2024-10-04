@@ -281,8 +281,7 @@
                 </a>
               </li>
             </ul>
-            <div class="d-lg-flex col-lg-3 justify-content-lg-end">
-              <!-- <button class="btn btn-primary">Button</button> -->
+            <!-- <div class="d-lg-flex col-lg-3 justify-content-lg-end">
               <a
                 id="navbar-custom"
                 class="btn btn-primary w-10"
@@ -290,7 +289,11 @@
               >
                 Giriş Yap
               </a>
-            </div>
+            </div> -->
+            <div
+              id="user-container"
+              class="d-lg-flex col-lg-3 justify-content-lg-end"
+            ></div>
           </div>
         </div>
       </nav>
@@ -385,7 +388,7 @@
                   <svg class="bi pe-none me-2" width="40" height="32">
                     <use xlink:href="#bootstrap"></use>
                   </svg>
-                  <span class="fs-4">Sidebar</span>
+                  <span class="fs-4">Menü</span>
                 </a>
                 <hr />
                 <ul class="nav nav-pills flex-column mb-auto">
@@ -394,7 +397,7 @@
                       <svg class="bi pe-none me-2" width="16" height="16">
                         <use xlink:href="#home"></use>
                       </svg>
-                      Home
+                      Bütün Ürünler
                     </a>
                   </li>
                   <li>
@@ -576,43 +579,42 @@
             const products = await response.json();
 
             // Ürünleri listele
+            // Ürünleri listele
             const productList = document.getElementById("product-list");
             productList.innerHTML = ""; // Önceki ürünleri temizle
             products.forEach((product) => {
               const productCard = document.createElement("div");
               productCard.className = "col"; // Bootstrap sınıfı
               productCard.innerHTML = `
-                            <div class="card shadow-sm">
-                                
-                                    <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false">
-                                        <title>${product.productName}</title>
-                                        <rect width="100%" height="100%" fill="#55595c" />
-                                        <text x="50%" y="50%" fill="#eceeef" dy=".3em">
-                                            ${product.thumbnail || "Thumbnail"}
-                                        </text>
-                                    </svg>
-                                    <div class="card-body">
-                                        <h4>${product.productName}</h4>
-                                        <p class="card-text">
-                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.
-                                        </p>
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <div class="btn-group">
-                                                <a type="button" class="btn btn-sm btn-outline-secondary" href="productDetails.html?id=${
-                                                  product.productCode
-                                                }">Detay</a>
-                                                <button type="button" class="btn btn-sm btn-outline-secondary" onclick="addToCart(${
-                                                  product.productCode
-                                                })">Sepete Ekle</button>
-                                            </div>
-                                            <small class="text-body-secondary">${
-                                              product.productPrice || null
-                                            } TL
-                                            </small>
-                                        </div>
-                                    </div>
-                            </div>
-                        `;
+              <div class="card shadow-sm">
+                  <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false">
+                      <title>${product.productName}</title>
+                      <rect width="100%" height="100%" fill="#55595c" />
+                      <text x="50%" y="50%" fill="#eceeef" dy=".3em">
+                          ${product.thumbnail || "Thumbnail"}
+                      </text>
+                  </svg>
+                  <div class="card-body">
+                      <h4>${product.productName}</h4>
+                      <p class="card-text">
+                          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.
+                      </p>
+                      <div class="d-flex justify-content-between align-items-center">
+                          <div class="btn-group">
+                              <a type="button" class="btn btn-sm btn-outline-secondary" href="productDetails.html?id=${
+                                product.productCode
+                              }">Detay</a>
+                              <button type="button" class="btn btn-sm btn-outline-secondary" onclick='addToCart(${JSON.stringify(
+                                product
+                              )})'>Sepete Ekle</button>
+                          </div>
+                          <small class="text-body-secondary">${
+                            product.productPrice || null
+                          } TL</small>
+                      </div>
+                  </div>
+              </div>
+          `;
               productList.appendChild(productCard);
             });
           } catch (error) {
@@ -636,6 +638,147 @@
         // Sayfa yüklendiğinde ürünleri getir
         fetchProducts();
       });
+
+      document.addEventListener("DOMContentLoaded", function () {
+        // Kullanıcı e-posta bilgisi localStorage'da mevcut mu?
+        const userEmail = localStorage.getItem("userEmail");
+        const userContainer = document.getElementById("user-container");
+
+        // Eğer kullanıcı girişi yapılmışsa, dropdown'ı ekle
+        if (userEmail) {
+          userContainer.innerHTML = `
+                      <div id="user-dropdown" class="dropdown">
+                          <a
+                              href="#"
+                              class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle"
+                              data-bs-toggle="dropdown"
+                              aria-expanded="false"
+                          >
+                              <img
+                                  // src="https://github.com/mdo.png"
+                                  alt=""
+                                  class="rounded-circle me-2"
+                              />
+                              <strong>${userEmail}</strong>
+                          </a>
+                          <ul class="dropdown-menu text-small shadow">
+                              <li>
+                                  <a class="dropdown-item" href="#">New project...</a>
+                              </li>
+                              <li><a class="dropdown-item" href="#">Settings</a></li>
+                              <li><a class="dropdown-item" href="logout.html">Ekranı Kitle</a></li>
+                              <li><hr class="dropdown-divider" /></li>
+                              <li><a class="dropdown-item" href="#">Sign out</a></li>
+                          </ul>
+                      </div>
+                  `;
+        } else {
+          // Eğer kullanıcı girişi yapılmamışsa, giriş butonunu ekle
+          userContainer.innerHTML = `
+                      <div id="login-button">
+                          <a
+                              id="navbar-custom"
+                              class="btn btn-primary d-flex justify-content-end"
+                              href="http://127.0.0.1:5500/sign-in.html"
+                          >
+                              Giriş Yap
+                          </a>
+                      </div>
+                  `;
+        }
+      });
+
+      class Cart {
+        constructor() {
+          // Eğer localStorage'da bir sepet varsa onu al, yoksa boş bir array kullan
+          this.items = JSON.parse(localStorage.getItem("cart")) || [];
+        }
+
+        // Ürün ekleme
+        addProduct(product) {
+          const existingItemIndex = this.items.findIndex(
+            (item) => item.productCode === product.productCode
+          );
+
+          // Kullanıcı e-postasını localStorage'dan al
+          const userEmail = localStorage.getItem("userEmail");
+
+          if (existingItemIndex > -1) {
+            // Ürün varsa miktarı artır
+            this.items[existingItemIndex].quantity += 1;
+            // Eğer kullanıcı girişi yapmışsa, cartOwnerEmail'ı güncelle
+            if (userEmail) {
+              this.items[existingItemIndex].cartOwnerEmail = userEmail;
+            }
+          } else {
+            // Ürün yoksa yeni bir ürün olarak ekle
+            this.items.push({
+              productCode: product.productCode,
+              productName: product.productName,
+              productPrice: product.productPrice,
+              cartOwnerEmail: userEmail,
+              quantity: 1, // Varsayılan miktar
+            });
+          }
+          // Güncellenmiş sepeti localStorage'a kaydet
+          this.saveCart();
+        }
+
+        // Ürün çıkarma
+        removeProduct(productCode) {
+          this.items = this.items.filter(
+            (item) => item.productCode !== productCode
+          );
+          this.saveCart();
+        }
+        // Yeni metod: Giriş yapan kullanıcının e-posta bilgisini güncelle
+        updateCartOwnerEmail() {
+          const userEmail = localStorage.getItem("userEmail");
+          if (userEmail) {
+            this.items.forEach((item) => {
+              item.cartOwnerEmail = userEmail;
+            });
+            this.saveCart();
+          }
+        }
+
+        // Sepeti kaydetme
+        saveCart() {
+          localStorage.setItem("cart", JSON.stringify(this.items));
+        }
+
+        // Toplam fiyat hesaplama
+        getTotalPrice() {
+          return this.items.reduce(
+            (total, item) => total + item.productPrice * item.quantity,
+            0
+          );
+        }
+
+        // Sepeti temizleme
+        clearCart() {
+          this.items = [];
+          this.saveCart();
+        }
+      }
+
+      function addToCart(product) {
+        const cart = new Cart();
+
+        // Kullanıcı e-postasını kontrol et
+        const userEmail = localStorage.getItem("userEmail");
+
+        // Eğer kullanıcı giriş yaptıysa, cartOwnerEmail'ı güncelle
+        if (userEmail) {
+          cart.updateCartOwnerEmail();
+        }
+
+        cart.addProduct(product);
+
+        console.log(product);
+        console.log(cart);
+        alert(`${product.productName} sepete eklendi!`);
+      }
     </script>
     <script src="../assets/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/js/index.js"></script>

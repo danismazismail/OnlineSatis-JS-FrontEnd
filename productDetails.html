@@ -150,9 +150,30 @@
           flex-direction: column;
         }
       }
+      #loader {
+        display: none; /* Başlangıçta gizli */
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+      }
+      .bd-mode-toggle {
+        z-index: 1500;
+      }
+
+      .bd-mode-toggle .dropdown-menu .active .bi {
+        display: block !important;
+      }
     </style>
   </head>
   <body>
+    <div id="loader">Yükleniyor...</div>
     <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
       <symbol id="check2" viewBox="0 0 16 16">
         <path
@@ -299,16 +320,10 @@
                 </ul>
               </li>
             </ul>
-            <div class="d-lg-flex col-lg-3 justify-content-lg-end">
-              <!-- <button class="btn btn-primary">Button</button> -->
-              <a
-                id="navbar-custom"
-                class="btn btn-primary w-10"
-                href="http://127.0.0.1:5500/sign-in.html"
-              >
-                Giriş Yap
-              </a>
-            </div>
+            <div
+              id="user-container"
+              class="d-lg-flex col-lg-3 justify-content-lg-end"
+            ></div>
           </div>
         </div>
       </nav>
@@ -511,6 +526,55 @@
           quantityInput.value = parseInt(quantityInput.value) - 1;
         }
       }
+
+      document.addEventListener("DOMContentLoaded", function () {
+        // Kullanıcı e-posta bilgisi localStorage'da mevcut mu?
+        const userEmail = localStorage.getItem("userEmail");
+        const userContainer = document.getElementById("user-container");
+
+        // Eğer kullanıcı girişi yapılmışsa, dropdown'ı ekle
+        if (userEmail) {
+          userContainer.innerHTML = `
+                <div id="user-dropdown" class="dropdown">
+                    <a
+                        href="#"
+                        class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                    >
+                        <img
+                            // src="https://github.com/mdo.png"
+                            alt=""
+                            class="rounded-circle me-2"
+                        />
+                        <strong>${userEmail}</strong>
+                    </a>
+                    <ul class="dropdown-menu text-small shadow">
+                        <li>
+                            <a class="dropdown-item" href="#">New project...</a>
+                        </li>
+                        <li><a class="dropdown-item" href="#">Settings</a></li>
+                        <li><a class="dropdown-item" href="logout.html">Ekranı Kitle</a></li>
+                        <li><hr class="dropdown-divider" /></li>
+                        <li><a class="dropdown-item" href="#">Sign out</a></li>
+                    </ul>
+                </div>
+            `;
+        } else {
+          // Eğer kullanıcı girişi yapılmamışsa, giriş butonunu ekle
+          userContainer.innerHTML = `
+                <div id="login-button">
+                    <a
+                        id="navbar-custom"
+                        class="btn btn-primary d-flex justify-content-end"
+                        href="http://127.0.0.1:5500/sign-in.html"
+                    >
+                        Giriş Yap
+                    </a>
+                </div>
+            `;
+        }
+      });
     </script>
     <script src="/js/productDetails.js"></script>
   </body>

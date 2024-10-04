@@ -88,7 +88,7 @@ document.addEventListener("DOMContentLoaded", function () {
       localStorage.setItem("authToken", token);
       sessionStorage.setItem("authToken", token);
       localStorage.setItem("userEmail", email);
-      window.location.href = "http://127.0.0.1:5500/users.html";
+      window.location.href = "http://127.0.0.1:5500/index.html";
     } catch (error) {
       alert(error.message); // Hata mesajını göster
     }
