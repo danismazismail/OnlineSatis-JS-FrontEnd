@@ -11,7 +11,7 @@
       content="Mark Otto, Jacob Thornton, and Bootstrap contributors"
     />
     <meta name="generator" content="Hugo 0.122.0" />
-    <title>Album example · Bootstrap v5.3</title>
+    <title>Online Satis</title>
 
     <link
       rel="canonical"
@@ -227,7 +227,7 @@
 
     <header data-bs-theme="dark">
       <nav
-        class="navbar navbar-expand-lg bg-body-tertiary rounded"
+        class="navbar navbar-expand-lg bg-body-tertiary rounded fixed-top"
         aria-label="Thirteenth navbar example"
       >
         <div class="container-fluid">
@@ -463,7 +463,7 @@
               </div>
             </div>
 
-            <div class="col-md-10">
+            <div class="col-md-9 container">
               <!-- Ana içerik alanı -->
               <div
                 class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-md-4 g-4"
@@ -544,19 +544,24 @@
 
         <ul class="nav col-md-4 justify-content-end">
           <li class="nav-item">
-            <a href="#" class="nav-link px-2 text-body-secondary">Home</a>
+            <a href="index.html" class="nav-link px-2 text-body-secondary"
+              >Anasayfa</a
+            >
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link px-2 text-body-secondary">Features</a>
+            <a href="features.html" class="nav-link px-2 text-body-secondary"
+              >Özellikler</a
+            >
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link px-2 text-body-secondary">Pricing</a>
+            <a href="FAQs.html" class="nav-link px-2 text-body-secondary"
+              >S.S.S</a
+            >
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link px-2 text-body-secondary">FAQs</a>
-          </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link px-2 text-body-secondary">About</a>
+            <a href="about.html" class="nav-link px-2 text-body-secondary"
+              >Hakkımızda</a
+            >
           </li>
         </ul>
       </footer>
@@ -647,46 +652,84 @@
         // Eğer kullanıcı girişi yapılmışsa, dropdown'ı ekle
         if (userEmail) {
           userContainer.innerHTML = `
-                      <div id="user-dropdown" class="dropdown">
-                          <a
-                              href="#"
-                              class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle"
-                              data-bs-toggle="dropdown"
-                              aria-expanded="false"
-                          >
-                              <img
-                                  // src="https://github.com/mdo.png"
-                                  alt=""
-                                  class="rounded-circle me-2"
-                              />
-                              <strong>${userEmail}</strong>
-                          </a>
-                          <ul class="dropdown-menu text-small shadow">
-                              <li>
-                                  <a class="dropdown-item" href="#">New project...</a>
-                              </li>
-                              <li><a class="dropdown-item" href="#">Settings</a></li>
-                              <li><a class="dropdown-item" href="logout.html">Ekranı Kitle</a></li>
-                              <li><hr class="dropdown-divider" /></li>
-                              <li><a class="dropdown-item" href="#">Sign out</a></li>
-                          </ul>
-                      </div>
-                  `;
+                <div id="user-dropdown" class="dropdown">
+                    <a
+                        href="#"
+                        class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                    >
+                        <img
+                            alt=""
+                            class="rounded-circle me-2"
+                        />
+                        <strong>${userEmail}</strong>
+                    </a>
+                    <ul class="dropdown-menu text-small shadow">
+                        <li>
+                            <a class="dropdown-item" href="#" onclick="Verify2FACode()">İki Faktörlü Doğrulama Onayla</a>
+                        </li>
+                        <li><a class="dropdown-item" href="#" onclick="ChangePassword()">Şifre Yenile</a></li>
+                        <li><a class="dropdown-item" href="" onclick="Logout()">Ekranı Kitle</a></li>
+                        <li><hr class="dropdown-divider" /></li>
+                        <li><a class="dropdown-item" href="#" onclick="Signout()">Çıkış</a></li>
+                    </ul>
+                </div>
+            `;
         } else {
           // Eğer kullanıcı girişi yapılmamışsa, giriş butonunu ekle
           userContainer.innerHTML = `
-                      <div id="login-button">
-                          <a
-                              id="navbar-custom"
-                              class="btn btn-primary d-flex justify-content-end"
-                              href="http://127.0.0.1:5500/sign-in.html"
-                          >
-                              Giriş Yap
-                          </a>
-                      </div>
-                  `;
+                <div id="login-button">
+                    <a
+                        id="navbar-custom"
+                        class="btn btn-primary d-flex justify-content-end"
+                        href="http://127.0.0.1:5500/sign-in.html"
+                    >
+                        Giriş Yap
+                    </a>
+                </div>
+            `;
         }
       });
+
+      function Logout() {
+        // Kullanıcının token'ını localStorage veya cookie'den alabilirsiniz (bu örnekte localStorage üzerinden alındı)
+        const token = localStorage.getItem("authToken"); // Token'ı sakladığınız yer
+
+        if (!token) {
+          alert("Çıkış yapmak için bir token bulunamadı.");
+          return;
+        }
+
+        // API'ye JSON formatında POST isteği atmak için fetch kullanıyoruz
+        fetch("http://localhost:5198/api/Account/logout", {
+          // API URL'sini buraya yazın
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json", // Gönderim tipi JSON
+          },
+          body: JSON.stringify({ token: token }), // Token'ı JSON formatında gönderiyoruz
+        })
+          .then((response) => {
+            if (!response.ok) {
+              return response.json().then((error) => {
+                throw new Error(error.message);
+              });
+            }
+            return response.json();
+          })
+          .then((data) => {
+            alert(data.message); // Başarılı mesajı göster
+            // Token'ı temizleyin ve logout sayfasına yönlendirin
+            localStorage.removeItem("authToken");
+            window.location.href = "/logout.html"; // Logout sayfasına yönlendirme
+          })
+          .catch((error) => {
+            console.error("Hata:", error.message);
+            alert("Çıkış yapılamadı: " + error.message);
+          });
+      }
 
       class Cart {
         constructor() {
