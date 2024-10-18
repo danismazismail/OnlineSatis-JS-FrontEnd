@@ -389,37 +389,83 @@
         // Ara toplamı güncelleme
         subTotalElement.innerText = `$${subTotal.toFixed(2)}`;
 
-        // Kargo ücretini de ara toplamla birlikte gösteriyoruz
-        shippingArea.innerHTML = `
-          <tr>
-            <td></td>
-            <td></td>
-            <td><h5>Ara Toplam</h5></td>
-            <td><h5 id="subTotal">$${subTotal.toFixed(2)}</h5></td>
-          </tr>
-          <tr>
-            <td></td>
-            <td></td>
-            <td><h5>Kargo Firmaları</h5></td>
-            <td>
-              <div class="shipping_box">
-                <ul class="list">
-                  <li>
-                    Flat Rate: $${shippingCost.toFixed(2)}
-                    <input type="radio" name="shipping" checked>
-                  </li>
-                </ul>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td></td>
-            <td></td>
-            <td><h5>Toplam</h5></td>
-            <td><h5>$${(subTotal + shippingCost).toFixed(2)}</h5></td>
-          </tr>
-        `;
+        // Kargo firmalarını API'den çekiyoruz
+        fetch("http://localhost:5198/api/Shipper/GetAllShipper")
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("Network response was not ok");
+            }
+            return response.json();
+          })
+          .then((data) => {
+            // Kargo firmalarını güncelle
+            updateShippingArea(data);
+          })
+          .catch((error) => {
+            console.error(
+              "There was a problem with the fetch operation:",
+              error
+            );
+          });
       };
+
+      // Kargo alanını güncelle
+      function updateShippingArea(shippers) {
+        var shippingArea = document.getElementById("shippingArea");
+        var shippingCost = 5.0; // Sabit kargo ücreti
+        var subTotal = 0;
+
+        // Sepeti LocalStorage'dan alıyoruz
+        var cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+        // Ara toplamı hesapla
+        cart.forEach((item) => {
+          var itemTotal = (item.quantity * item.productPrice).toFixed(2);
+          subTotal += parseFloat(itemTotal);
+        });
+
+        // Kargo firmalarını içeren HTML içeriği oluşturma
+        var shippingOptionsHtml = shippers
+          .map(
+            (shipper) => `
+      <li>
+          <input type="radio" name="shipping" value="${shipper.shipperCode}">
+          ${shipper.shipperName}: ${
+              shipper.deliveryTime
+            } - $${shipper.price.toFixed(2)}
+      </li>
+  `
+          )
+          .join("");
+
+        // Kargo alanını güncelle
+        shippingArea.innerHTML = `
+      <tr>
+          <td></td>
+          <td></td>
+          <td><h5>Ara Toplam</h5></td>
+          <td><h5 id="subTotal">$${subTotal.toFixed(2)}</h5></td>
+      </tr>
+      <tr>
+          <td></td>
+          <td></td>
+          <td><h5>Kargo Firmaları</h5></td>
+          <td>
+              <div class="shipping_box">
+                  <ul class="list" style="list-style-type: none;">
+                      ${shippingOptionsHtml}
+                  </ul>
+              </div>
+          </td>
+      </tr>
+      <tr>
+          <td></td>
+          <td></td>
+          <td><h5>Toplam</h5></td>
+          <td><h5>$${(subTotal + shippingCost).toFixed(2)}</h5></td>
+      </tr>
+  `;
+      }
 
       function removeItem(productCode) {
         // LocalStorage'dan sepetteki ürünleri alıyoruz
