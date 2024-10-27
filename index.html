@@ -388,7 +388,7 @@
                   <svg class="bi pe-none me-2" width="40" height="32">
                     <use xlink:href="#bootstrap"></use>
                   </svg>
-                  <span class="fs-4">Menü</span>
+                  <span class="fs-4">Kategoriler</span>
                 </a>
                 <hr />
                 <ul class="nav nav-pills flex-column mb-auto">
@@ -405,7 +405,7 @@
                       <svg class="bi pe-none me-2" width="16" height="16">
                         <use xlink:href="#speedometer2"></use>
                       </svg>
-                      Dashboard
+                      Kalemler
                     </a>
                   </li>
                   <li>
@@ -413,7 +413,7 @@
                       <svg class="bi pe-none me-2" width="16" height="16">
                         <use xlink:href="#table"></use>
                       </svg>
-                      Orders
+                      Defterler
                     </a>
                   </li>
                   <li>
@@ -421,7 +421,7 @@
                       <svg class="bi pe-none me-2" width="16" height="16">
                         <use xlink:href="#grid"></use>
                       </svg>
-                      Products
+                      Ofis Malzemeleri
                     </a>
                   </li>
                   <li>
@@ -429,37 +429,19 @@
                       <svg class="bi pe-none me-2" width="16" height="16">
                         <use xlink:href="#people-circle"></use>
                       </svg>
-                      Customers
+                      Sanat Malzemeleri
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" class="nav-link link-body-emphasis">
+                      <svg class="bi pe-none me-2" width="16" height="16">
+                        <use xlink:href="#people-circle"></use>
+                      </svg>
+                      Yapıştırıcılar
                     </a>
                   </li>
                 </ul>
                 <hr />
-                <div class="dropdown">
-                  <a
-                    href="#"
-                    class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
-                  >
-                    <img
-                      src="https://github.com/mdo.png"
-                      alt=""
-                      width="32"
-                      height="32"
-                      class="rounded-circle me-2"
-                    />
-                    <strong>mdo</strong>
-                  </a>
-                  <ul class="dropdown-menu text-small shadow">
-                    <li>
-                      <a class="dropdown-item" href="#">New project...</a>
-                    </li>
-                    <li><a class="dropdown-item" href="#">Settings</a></li>
-                    <li><a class="dropdown-item" href="#">Profile</a></li>
-                    <li><hr class="dropdown-divider" /></li>
-                    <li><a class="dropdown-item" href="#">Sign out</a></li>
-                  </ul>
-                </div>
               </div>
             </div>
 
@@ -667,7 +649,7 @@
                     </a>
                     <ul class="dropdown-menu text-small shadow">
                         <li>
-                            <a class="dropdown-item" href="#" onclick="Verify2FACode()">İki Faktörlü Doğrulama Onayla</a>
+                            <a class="dropdown-item" href="#" onclick="Confirm2FACode()">İki Faktörlü Doğrulama Onayla</a>
                         </li>
                         <li><a class="dropdown-item" href="#" onclick="ChangePassword()">Şifre Yenile</a></li>
                         <li><a class="dropdown-item" href="" onclick="Logout()">Ekranı Kitle</a></li>
@@ -821,6 +803,35 @@
         console.log(product);
         console.log(cart);
         alert(`${product.productName} sepete eklendi!`);
+      }
+
+      function Confirm2FACode() {
+        var userEmail = localStorage.getItem("userEmail");
+
+        // API'ye JSON formatında POST isteği atmak için fetch kullanıyoruz
+        fetch("http://localhost:5198/api/Account/Confirm2FACode", {
+          // API URL'sini buraya yazın
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json", // Gönderim tipi JSON
+          },
+          body: JSON.stringify(userEmail),
+        })
+          .then((response) => {
+            if (!response.ok) {
+              return response.json().then((error) => {
+                throw new Error(error.message);
+              });
+            }
+            return response.json();
+          })
+          .then((data) => {
+            alert("İki faktörlü doğrulama tipinizi değiştirdiniz."); // Başarılı mesajı göster
+          })
+          .catch((error) => {
+            alert("Hata: " + error.message);
+          });
       }
     </script>
     <script src="../assets/dist/js/bootstrap.bundle.min.js"></script>
