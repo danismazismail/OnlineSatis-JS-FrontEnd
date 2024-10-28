@@ -2,7 +2,12 @@
 <html lang="en" data-bs-theme="auto">
   <head>
     <script src="../assets/js/color-modes.js"></script>
-
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+      integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="" />
@@ -293,49 +298,48 @@
     <!-- slider Area End-->
 
     <!--================Cart Area =================-->
-    <form>
-      <section class="cart_area section_padding mt-5">
-        <div class="container">
-          <div class="cart_inner">
-            <div class="table-responsive">
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th scope="col">Ürün Adı</th>
-                    <th scope="col">Fiyatı</th>
-                    <th scope="col">Adedi</th>
-                    <th scope="col">Toplam</th>
-                  </tr>
-                </thead>
-                <tbody id="cart-items">
-                  <!-- Ürünler buraya eklenecek -->
-                </tbody>
-                <tfoot id="shippingArea">
-                  <tr>
-                    <td></td>
-                    <td></td>
-                    <td><h5>Ara Toplam</h5></td>
-                    <td><h5 id="subTotal">$0.00</h5></td>
-                  </tr>
-                  <tr>
-                    <td></td>
-                    <td></td>
-                    <td><h5>Kargo Firmaları</h5></td>
-                    <td>
-                      <p>Kargo seçeneği yok.</p>
-                    </td>
-                  </tr>
-                </tfoot>
-              </table>
-            </div>
-          </div>
-          <div class="d-flex justify-content-end">
-            <button id="orderButton" class="btn btn-success">Satın Al</button>
+
+    <section class="cart_area section_padding mt-5">
+      <div class="container">
+        <div class="cart_inner">
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">Ürün Adı</th>
+                  <th scope="col">Fiyatı</th>
+                  <th scope="col">Adedi</th>
+                  <th scope="col">Toplam</th>
+                </tr>
+              </thead>
+              <tbody id="cart-items">
+                <!-- Ürünler buraya eklenecek -->
+              </tbody>
+              <tfoot id="shippingArea">
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td><h5>Ara Toplam</h5></td>
+                  <td><h5 id="subTotal">$0.00</h5></td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td><h5>Kargo Firmaları</h5></td>
+                  <td>
+                    <p>Kargo seçeneği yok.</p>
+                  </td>
+                </tr>
+              </tfoot>
+            </table>
           </div>
         </div>
-      </section>
-      <!--================End Cart Area =================-->
-    </form>
+        <div class="d-flex justify-content-end">
+          <button id="orderButton" class="btn btn-success">Satın Al</button>
+        </div>
+      </div>
+    </section>
+    <!--================End Cart Area =================-->
 
     <div class="container">
       <footer
