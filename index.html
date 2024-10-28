@@ -409,9 +409,14 @@
                   <span class="fs-4">Kategoriler</span>
                 </a>
                 <hr />
-                <ul class="nav nav-pills flex-column mb-auto">
+                <ul class="nav nav-pills flex-column mb-auto" id="Categories">
                   <li class="nav-item">
-                    <a href="#" class="nav-link active" aria-current="page">
+                    <a
+                      href="#"
+                      class="nav-link active"
+                      aria-current="page"
+                      data-category="0"
+                    >
                       <svg class="bi pe-none me-2" width="16" height="16">
                         <use xlink:href="#home"></use>
                       </svg>
@@ -419,7 +424,11 @@
                     </a>
                   </li>
                   <li>
-                    <a href="#" class="nav-link link-body-emphasis">
+                    <a
+                      href="#"
+                      class="nav-link link-body-emphasis"
+                      data-category="1"
+                    >
                       <svg class="bi pe-none me-2" width="16" height="16">
                         <use xlink:href="#speedometer2"></use>
                       </svg>
@@ -427,7 +436,11 @@
                     </a>
                   </li>
                   <li>
-                    <a href="#" class="nav-link link-body-emphasis">
+                    <a
+                      href="#"
+                      class="nav-link link-body-emphasis"
+                      data-category="2"
+                    >
                       <svg class="bi pe-none me-2" width="16" height="16">
                         <use xlink:href="#table"></use>
                       </svg>
@@ -435,7 +448,11 @@
                     </a>
                   </li>
                   <li>
-                    <a href="#" class="nav-link link-body-emphasis">
+                    <a
+                      href="#"
+                      class="nav-link link-body-emphasis"
+                      data-category="3"
+                    >
                       <svg class="bi pe-none me-2" width="16" height="16">
                         <use xlink:href="#grid"></use>
                       </svg>
@@ -443,7 +460,11 @@
                     </a>
                   </li>
                   <li>
-                    <a href="#" class="nav-link link-body-emphasis">
+                    <a
+                      href="#"
+                      class="nav-link link-body-emphasis"
+                      data-category="4"
+                    >
                       <svg class="bi pe-none me-2" width="16" height="16">
                         <use xlink:href="#people-circle"></use>
                       </svg>
@@ -451,7 +472,11 @@
                     </a>
                   </li>
                   <li>
-                    <a href="#" class="nav-link link-body-emphasis">
+                    <a
+                      href="#"
+                      class="nav-link link-body-emphasis"
+                      data-category="5"
+                    >
                       <svg class="bi pe-none me-2" width="16" height="16">
                         <use xlink:href="#people-circle"></use>
                       </svg>
@@ -567,6 +592,63 @@
       </footer>
     </div>
     <script>
+      $(document).on("click", ".nav-link", function () {
+        var $this = $(this);
+        if (!$this.hasClass("active")) {
+          $("#Categories li").find(".active").removeClass("active");
+          $this.addClass("active");
+        }
+        var categoryCode = $this.data("category");
+        $.ajax({
+          url:
+            "http://localhost:5198/api/Product/GetProductsByCategory/" +
+            categoryCode,
+          type: "GET",
+          complete: function (data) {
+            if (data.status == 200) {
+              var products = data.responseJSON;
+              // Ürünleri listele
+              const productList = document.getElementById("product-list");
+              productList.innerHTML = ""; // Önceki ürünleri temizle
+              products.forEach((product) => {
+                const productCard = document.createElement("div");
+                productCard.className = "col"; // Bootstrap sınıfı
+                productCard.innerHTML = `
+              <div class="card shadow-sm">
+                  <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false">
+                      <title>${product.productName}</title>
+                      <rect width="100%" height="100%" fill="#55595c" />
+                      <text x="50%" y="50%" fill="#eceeef" dy=".3em">
+                          ${product.thumbnail || "Thumbnail"}
+                      </text>
+                  </svg>
+                  <div class="card-body">
+                      <h4>${product.productName}</h4>
+                      <p class="card-text">
+                          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.
+                      </p>
+                      <div class="d-flex justify-content-between align-items-center">
+                          <div class="btn-group">
+                              <a type="button" class="btn btn-sm btn-outline-secondary" href="productDetails.html?id=${
+                                product.productCode
+                              }">Detay</a>
+                              <button type="button" class="btn btn-sm btn-outline-secondary" onclick='addToCart(${JSON.stringify(
+                                product
+                              )})'>Sepete Ekle</button>
+                          </div>
+                          <small class="text-body-secondary">${
+                            product.productPrice || null
+                          } TL</small>
+                      </div>
+                  </div>
+              </div>
+          `;
+                productList.appendChild(productCard);
+              });
+            } else alert("Bir hata oluştu.");
+          },
+        });
+      });
       document.addEventListener("DOMContentLoaded", function () {
         async function fetchProducts() {
           // Yükleniyor mesajını göster (isteğe bağlı)

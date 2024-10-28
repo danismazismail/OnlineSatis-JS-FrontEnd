@@ -80,7 +80,7 @@ $(document).on("click", "#orderButton", function () {
       contentType: "application/json",
       data: JSON.stringify(orderData),
       complete: function (xhr, statusText) {
-        if (xhr.status) {
+        if (xhr.status == 200) {
           localStorage.removeItem("cart");
           alert("Sipariş başarı ile alınmıştır.");
           location.reload();
