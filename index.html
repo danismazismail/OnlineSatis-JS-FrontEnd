@@ -2,7 +2,12 @@
 <html lang="en" data-bs-theme="auto">
   <head>
     <script src="../assets/js/color-modes.js"></script>
-
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+      integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="" />
@@ -130,6 +135,19 @@
   </head>
   <body>
     <div id="loader">Yükleniyor...</div>
+    <div class="modal" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Uyarı</h5>
+          </div>
+          <div class="modal-body">
+            <p></p>
+          </div>
+          <div class="modal-footer"></div>
+        </div>
+      </div>
+    </div>
     <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
       <symbol id="check2" viewBox="0 0 16 16">
         <path
@@ -250,31 +268,17 @@
             <ul class="navbar-nav col-lg-6 justify-content-lg-center">
               <li class="nav-item">
                 <a class="nav-link active" aria-current="page" href="index.html"
-                  >Home</a
+                  >Ana Sayfa</a
                 >
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">Link</a>
+                <a class="nav-link" href="about.html">Hakkımızda</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+                <a class="nav-link" href="FAQs.html">S.S.S.</a>
               </li>
-              <li class="nav-item dropdown">
-                <a
-                  class="nav-link dropdown-toggle"
-                  href="#"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                  >Dropdown</a
-                >
-                <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="Category-index.html">Kategori</a></li>
-                  <li><a class="dropdown-item" href="#">Action</a></li>
-                  <li><a class="dropdown-item" href="#">Another action</a></li>
-                  <li>
-                    <a class="dropdown-item" href="#">Something else here</a>
-                  </li>
-                </ul>
+              <li class="nav-item">
+                <a class="nav-link" href="features.html">Özellikler</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link active" aria-current="page" href="card.html">
@@ -389,12 +393,17 @@
                   <svg class="bi pe-none me-2" width="40" height="32">
                     <use xlink:href="#bootstrap"></use>
                   </svg>
-                  <span class="fs-4">Menü</span>
+                  <span class="fs-4">Kategoriler</span>
                 </a>
                 <hr />
-                <ul class="nav nav-pills flex-column mb-auto">
+                <ul class="nav nav-pills flex-column mb-auto" id="Categories">
                   <li class="nav-item">
-                    <a href="#" class="nav-link active" aria-current="page">
+                    <a
+                      href="#"
+                      class="nav-link active"
+                      aria-current="page"
+                      data-category="0"
+                    >
                       <svg class="bi pe-none me-2" width="16" height="16">
                         <use xlink:href="#home"></use>
                       </svg>
@@ -402,65 +411,67 @@
                     </a>
                   </li>
                   <li>
-                    <a href="#" class="nav-link link-body-emphasis">
+                    <a
+                      href="#"
+                      class="nav-link link-body-emphasis"
+                      data-category="1"
+                    >
                       <svg class="bi pe-none me-2" width="16" height="16">
                         <use xlink:href="#speedometer2"></use>
                       </svg>
-                      Dashboard
+                      Kalemler
                     </a>
                   </li>
                   <li>
-                    <a href="#" class="nav-link link-body-emphasis">
+                    <a
+                      href="#"
+                      class="nav-link link-body-emphasis"
+                      data-category="2"
+                    >
                       <svg class="bi pe-none me-2" width="16" height="16">
                         <use xlink:href="#table"></use>
                       </svg>
-                      Orders
+                      Defterler
                     </a>
                   </li>
                   <li>
-                    <a href="#" class="nav-link link-body-emphasis">
+                    <a
+                      href="#"
+                      class="nav-link link-body-emphasis"
+                      data-category="3"
+                    >
                       <svg class="bi pe-none me-2" width="16" height="16">
                         <use xlink:href="#grid"></use>
                       </svg>
-                      Products
+                      Ofis Malzemeleri
                     </a>
                   </li>
                   <li>
-                    <a href="#" class="nav-link link-body-emphasis">
+                    <a
+                      href="#"
+                      class="nav-link link-body-emphasis"
+                      data-category="4"
+                    >
                       <svg class="bi pe-none me-2" width="16" height="16">
                         <use xlink:href="#people-circle"></use>
                       </svg>
-                      Customers
+                      Sanat Malzemeleri
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="#"
+                      class="nav-link link-body-emphasis"
+                      data-category="5"
+                    >
+                      <svg class="bi pe-none me-2" width="16" height="16">
+                        <use xlink:href="#people-circle"></use>
+                      </svg>
+                      Yapıştırıcılar
                     </a>
                   </li>
                 </ul>
                 <hr />
-                <div class="dropdown">
-                  <a
-                    href="#"
-                    class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
-                  >
-                    <img
-                      src="https://github.com/mdo.png"
-                      alt=""
-                      width="32"
-                      height="32"
-                      class="rounded-circle me-2"
-                    />
-                    <strong>mdo</strong>
-                  </a>
-                  <ul class="dropdown-menu text-small shadow">
-                    <li>
-                      <a class="dropdown-item" href="#">New project...</a>
-                    </li>
-                    <li><a class="dropdown-item" href="#">Settings</a></li>
-                    <li><a class="dropdown-item" href="#">Profile</a></li>
-                    <li><hr class="dropdown-divider" /></li>
-                    <li><a class="dropdown-item" href="#">Sign out</a></li>
-                  </ul>
-                </div>
               </div>
             </div>
 
@@ -568,6 +579,63 @@
       </footer>
     </div>
     <script>
+      $(document).on("click", ".nav-link", function () {
+        var $this = $(this);
+        if (!$this.hasClass("active")) {
+          $("#Categories li").find(".active").removeClass("active");
+          $this.addClass("active");
+        }
+        var categoryCode = $this.data("category");
+        $.ajax({
+          url:
+            "http://localhost:5198/api/Product/GetProductsByCategory/" +
+            categoryCode,
+          type: "GET",
+          complete: function (data) {
+            if (data.status == 200) {
+              var products = data.responseJSON;
+              // Ürünleri listele
+              const productList = document.getElementById("product-list");
+              productList.innerHTML = ""; // Önceki ürünleri temizle
+              products.forEach((product) => {
+                const productCard = document.createElement("div");
+                productCard.className = "col"; // Bootstrap sınıfı
+                productCard.innerHTML = `
+              <div class="card shadow-sm">
+                  <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false">
+                      <title>${product.productName}</title>
+                      <rect width="100%" height="100%" fill="#55595c" />
+                      <text x="50%" y="50%" fill="#eceeef" dy=".3em">
+                          ${product.thumbnail || "Thumbnail"}
+                      </text>
+                  </svg>
+                  <div class="card-body">
+                      <h4>${product.productName}</h4>
+                      <p class="card-text">
+                          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.
+                      </p>
+                      <div class="d-flex justify-content-between align-items-center">
+                          <div class="btn-group">
+                              <a type="button" class="btn btn-sm btn-outline-secondary" href="productDetails.html?id=${
+                                product.productCode
+                              }">Detay</a>
+                              <button type="button" class="btn btn-sm btn-outline-secondary" onclick='addToCart(${JSON.stringify(
+                                product
+                              )})'>Sepete Ekle</button>
+                          </div>
+                          <small class="text-body-secondary">${
+                            product.productPrice || null
+                          } TL</small>
+                      </div>
+                  </div>
+              </div>
+          `;
+                productList.appendChild(productCard);
+              });
+            } else alert("Bir hata oluştu.");
+          },
+        });
+      });
       document.addEventListener("DOMContentLoaded", function () {
         async function fetchProducts() {
           // Yükleniyor mesajını göster (isteğe bağlı)
@@ -631,11 +699,6 @@
           }
         }
 
-        // Sepete ekleme fonksiyonu
-        function addToCart(productId) {
-          console.log(`Ürün ${productId} sepete eklendi.`);
-        }
-
         // Ürün detaylarına gitme fonksiyonu
         function viewDetails(productId) {
           window.location.href = `productDetails.html?id=${productId}`;
@@ -668,12 +731,11 @@
                     </a>
                     <ul class="dropdown-menu text-small shadow">
                         <li>
-                            <a class="dropdown-item" href="#" onclick="Verify2FACode()">İki Faktörlü Doğrulama Onayla</a>
+                            <a class="dropdown-item" href="#" onclick="Confirm2FACode()">İki Faktörlü Doğrulama Onayla</a>
                         </li>
-                        <li><a class="dropdown-item" href="#" onclick="ChangePassword()">Şifre Yenile</a></li>
-                        <li><a class="dropdown-item" href="" onclick="Logout()">Ekranı Kitle</a></li>
+                        <li><a class="dropdown-item" href="reset-password.html">Şifre Yenile</a></li>
                         <li><hr class="dropdown-divider" /></li>
-                        <li><a class="dropdown-item" href="#" onclick="Signout()">Çıkış</a></li>
+                        <li><a class="dropdown-item" href="#" onclick="Logout()">Çıkış</a></li>
                     </ul>
                 </div>
             `;
@@ -695,41 +757,35 @@
 
       function Logout() {
         // Kullanıcının token'ını localStorage veya cookie'den alabilirsiniz (bu örnekte localStorage üzerinden alındı)
-        const token = localStorage.getItem("authToken"); // Token'ı sakladığınız yer
+        let token = sessionStorage.getItem("authToken"); // Token'ı sakladığınız yer
 
         if (!token) {
           alert("Çıkış yapmak için bir token bulunamadı.");
           return;
         }
-
-        // API'ye JSON formatında POST isteği atmak için fetch kullanıyoruz
-        fetch("http://localhost:5198/api/Account/logout", {
-          // API URL'sini buraya yazın
-          method: "POST",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json", // Gönderim tipi JSON
-          },
-          body: JSON.stringify({ token: token }), // Token'ı JSON formatında gönderiyoruz
-        })
-          .then((response) => {
-            if (!response.ok) {
-              return response.json().then((error) => {
-                throw new Error(error.message);
-              });
-            }
-            return response.json();
-          })
-          .then((data) => {
+        $.ajax({
+          url: "http://localhost:5198/api/Account/logout",
+          type: "POST",
+          dataType: "json",
+          contentType: "application/json",
+          data: JSON.stringify(token),
+          success: function (data) {
             alert(data.message); // Başarılı mesajı göster
             // Token'ı temizleyin ve logout sayfasına yönlendirin
-            localStorage.removeItem("authToken");
-            window.location.href = "/logout.html"; // Logout sayfasına yönlendirme
-          })
-          .catch((error) => {
-            console.error("Hata:", error.message);
-            alert("Çıkış yapılamadı: " + error.message);
-          });
+            sessionStorage.removeItem("authToken");
+            localStorage.removeItem("userEmail"); // Kullanıcı e-postasını localStorage'dan sil
+            sessionStorage.removeItem("userEmail"); // Kullanıcı adresini localStorage'dan sil
+            window.location.href = "sign-in.html"; // Logout sayfasına yönlendirme
+          },
+          error: function (xhr) {
+            var errorMessage =
+              xhr.responseJSON && xhr.responseJSON.message
+                ? xhr.responseJSON.message
+                : "Bilinmeyen bir hata oluştu";
+            console.error("Hata:", errorMessage);
+            alert("Çıkış yapılamadı: " + errorMessage);
+          },
+        });
       }
 
       class Cart {
@@ -821,7 +877,41 @@
 
         console.log(product);
         console.log(cart);
-        alert(`${product.productName} sepete eklendi!`);
+        //alert(`${product.productName} sepete eklendi!`);
+        $(".modal").modal("toggle");
+        $(".modal-body p").text(`${product.productName} sepete eklendi!`);
+        setTimeout(function () {
+          $(".modal").modal("hide");
+        }, 2000);
+      }
+
+      function Confirm2FACode() {
+        var userEmail = localStorage.getItem("userEmail");
+
+        // API'ye JSON formatında POST isteği atmak için fetch kullanıyoruz
+        fetch("http://localhost:5198/api/Account/Confirm2FACode", {
+          // API URL'sini buraya yazın
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json", // Gönderim tipi JSON
+          },
+          body: JSON.stringify(userEmail),
+        })
+          .then((response) => {
+            if (!response.ok) {
+              return response.json().then((error) => {
+                throw new Error(error.message);
+              });
+            }
+            return response.json();
+          })
+          .then((data) => {
+            alert("İki faktörlü doğrulama tipinizi değiştirdiniz."); // Başarılı mesajı göster
+          })
+          .catch((error) => {
+            alert("Hata: " + error.message);
+          });
       }
     </script>
     <script src="../assets/dist/js/bootstrap.bundle.min.js"></script>

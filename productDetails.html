@@ -294,32 +294,33 @@
             <ul class="navbar-nav col-lg-6 justify-content-lg-center">
               <li class="nav-item">
                 <a class="nav-link active" aria-current="page" href="index.html"
-                  >Home</a
+                  >Ana Sayfa</a
                 >
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">Link</a>
+                <a class="nav-link" href="about.html">Hakkımızda</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+                <a class="nav-link" href="FAQs.html">S.S.S.</a>
               </li>
-              <li class="nav-item dropdown">
-                <a
-                  class="nav-link dropdown-toggle"
-                  href="#"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                  >Dropdown</a
-                >
-                <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="#">Action</a></li>
-                  <li><a class="dropdown-item" href="#">Another action</a></li>
-                  <li>
-                    <a class="dropdown-item" href="#">Something else here</a>
-                  </li>
-                </ul>
+              <li class="nav-item">
+                <a class="nav-link" href="features.html">Özellikler</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="card.html">
+                  <i class="fas fa-shopping-cart"></i> Sepet
+                </a>
               </li>
             </ul>
+            <!-- <div class="d-lg-flex col-lg-3 justify-content-lg-end">
+              <a
+                id="navbar-custom"
+                class="btn btn-primary w-10"
+                href="http://127.0.0.1:5500/sign-in.html"
+              >
+                Giriş Yap
+              </a>
+            </div> -->
             <div
               id="user-container"
               class="d-lg-flex col-lg-3 justify-content-lg-end"
@@ -543,7 +544,6 @@
                         aria-expanded="false"
                     >
                         <img
-                            // src="https://github.com/mdo.png"
                             alt=""
                             class="rounded-circle me-2"
                         />
@@ -551,12 +551,11 @@
                     </a>
                     <ul class="dropdown-menu text-small shadow">
                         <li>
-                            <a class="dropdown-item" href="#">New project...</a>
+                            <a class="dropdown-item" href="#" onclick="Confirm2FACode()">İki Faktörlü Doğrulama Onayla</a>
                         </li>
-                        <li><a class="dropdown-item" href="#">Settings</a></li>
-                        <li><a class="dropdown-item" href="logout.html">Ekranı Kitle</a></li>
+                        <li><a class="dropdown-item" href="reset-password.html">Şifre Yenile</a></li>
                         <li><hr class="dropdown-divider" /></li>
-                        <li><a class="dropdown-item" href="#">Sign out</a></li>
+                        <li><a class="dropdown-item" href="#" onclick="Logout()">Çıkış</a></li>
                     </ul>
                 </div>
             `;
@@ -575,6 +574,66 @@
             `;
         }
       });
+      function Logout() {
+        // Kullanıcının token'ını localStorage veya cookie'den alabilirsiniz (bu örnekte localStorage üzerinden alındı)
+        let token = sessionStorage.getItem("authToken"); // Token'ı sakladığınız yer
+
+        if (!token) {
+          alert("Çıkış yapmak için bir token bulunamadı.");
+          return;
+        }
+        $.ajax({
+          url: "http://localhost:5198/api/Account/logout",
+          type: "POST",
+          dataType: "json",
+          contentType: "application/json",
+          data: JSON.stringify(token),
+          success: function (data) {
+            alert(data.message); // Başarılı mesajı göster
+            // Token'ı temizleyin ve logout sayfasına yönlendirin
+            sessionStorage.removeItem("authToken");
+            localStorage.removeItem("userEmail"); // Kullanıcı e-postasını localStorage'dan sil
+            sessionStorage.removeItem("userEmail"); // Kullanıcı adresini localStorage'dan sil
+            window.location.href = "sign-in.html"; // Logout sayfasına yönlendirme
+          },
+          error: function (xhr) {
+            var errorMessage =
+              xhr.responseJSON && xhr.responseJSON.message
+                ? xhr.responseJSON.message
+                : "Bilinmeyen bir hata oluştu";
+            console.error("Hata:", errorMessage);
+            alert("Çıkış yapılamadı: " + errorMessage);
+          },
+        });
+      }
+      function Confirm2FACode() {
+        var userEmail = localStorage.getItem("userEmail");
+
+        // API'ye JSON formatında POST isteği atmak için fetch kullanıyoruz
+        fetch("http://localhost:5198/api/Account/Confirm2FACode", {
+          // API URL'sini buraya yazın
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json", // Gönderim tipi JSON
+          },
+          body: JSON.stringify(userEmail),
+        })
+          .then((response) => {
+            if (!response.ok) {
+              return response.json().then((error) => {
+                throw new Error(error.message);
+              });
+            }
+            return response.json();
+          })
+          .then((data) => {
+            alert("İki faktörlü doğrulama tipinizi değiştirdiniz."); // Başarılı mesajı göster
+          })
+          .catch((error) => {
+            alert("Hata: " + error.message);
+          });
+      }
     </script>
     <script src="/js/productDetails.js"></script>
   </body>
