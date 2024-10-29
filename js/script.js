@@ -72,7 +72,11 @@ document.addEventListener("DOMContentLoaded", function () {
         return;
       }
       let result = await response.json();
-
+      if (result.userRole === 1) {
+        localStorage.setItem("userEmail", email);
+        window.location.href = "http://127.0.0.1:5500/Category-index.html";
+        return;
+      }
       // `data.Data`'yı kontrol et
       if (result.twoFactorRequired === true) {
         // İki faktörlü doğrulama gereklidir
