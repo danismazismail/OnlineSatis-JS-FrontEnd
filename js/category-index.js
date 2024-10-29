@@ -1,14 +1,14 @@
 function loadCategories() {
-    if (!window.location.hash) {
-        window.location = window.location + "#loaded";
-        window.location.reload();
-      };
-
+  if (!window.location.hash) {
+    window.location = window.location + "#loaded";
+    window.location.reload();
+  }
 
   fetch("http://localhost:5198/api/Categories/GetAllCategory")
     .then((response) => response.json())
     .then((data) => {
-       console.log(data);
+      data.sort((a, b) => b.categoryCode - a.categoryCode);
+      console.log(data);
       var table = document.getElementById("categories");
 
       table.innerHTML = "";
@@ -34,12 +34,16 @@ function loadCategories() {
         );
         td5.appendChild(
           document.createTextNode(
-            (category.updatedDate != null ? new Date(category.updatedDate).toLocaleString("tr-TR") : "-")
+            category.updatedDate != null
+              ? new Date(category.updatedDate).toLocaleString("tr-TR")
+              : "-"
           )
         );
-        td6.appendChild(document.createTextNode(
+        td6.appendChild(
+          document.createTextNode(
             category.status == 1 ? "Aktif" : "Güncellenmiş"
-        ));
+          )
+        );
 
         var buttonUpdate = document.createElement("a");
         buttonUpdate.id = "updateBtn" + category.categoryCode;
@@ -73,61 +77,105 @@ function loadCategories() {
     });
 }
 
-function createCategory() { 
-    let form = document.getElementById("form");
+function createCategory() {
+  let form = document.getElementById("form");
 
-    if (form) {
-        form.addEventListener("submit", (event) => {
-            event.preventDefault();
-            const data = new FormData(form);
-           
+  if (form) {
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const data = new FormData(form);
 
-            fetch("http://localhost:5198/api/Categories/CreateCategory", {
-                method: "POST",
-                body: data,
-            }).then((response) => { console.log(response); })
-              .then((window.location.href = "Category-index.html"))
-              .catch((error) => { console.error(error) })
+      fetch("http://localhost:5198/api/Categories/CreateCategory", {
+        method: "POST",
+        body: data,
+      })
+        .then((response) => {
+          console.log(response);
         })
-     
-    }
- }
-
- function updateCategoryGet(){
-  var queryString=decodeURIComponent(window.location.search)
-  //console.log(queryString.substring(4))
-  var categoryId=queryString.substring(4)
- 
-fetch("http://localhost:5198/api/Categories/GetCategoryById?id=" +categoryId)
-.then((response) => response.json())
-.then((data) =>{
-  document.getElementById("id").value=data.categoryCode;
-  document.getElementById("name").value=data.categoryName;
-  document.getElementById("description").value=data.categoryDescription;
-})
- }
-
- function updateCategoryPost(event){
-  event.preventDefault();
-  let form =document.getElementById("updateCategoryForm");
-  const data=new FormData(form);
-   fetch("http://localhost:5198/api/Categories/UpdateCategory",{
-    method:"PUT",
-    body:data
-   }).then((response)=>console.log(response))
-   .then(()=>{
-    window.location.href="Category-index.html"
-   })
-   .catch((error)=>console.log(error))
- }
- function deleteCategory(categoryCode){
-  var result =confirm("Silmek istediğinize emin misiniz?")
-  if(result){
-    fetch("http://localhost:5198/api/Categories/DeleteCategory?id=" +categoryCode,{
-      method:"DELETE"
-    })
-    .then(()=>{
-      loadCategories()
-    }).catch(error=>console.log(error))
+        .then(function () {
+          window.location.href = "http://127.0.0.1:5500/Category-index.html";
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    });
   }
- }
+}
+
+function updateCategoryGet() {
+  var queryString = decodeURIComponent(window.location.search);
+  //console.log(queryString.substring(4))
+  var categoryId = queryString.substring(4);
+
+  fetch("http://localhost:5198/api/Categories/GetCategoryById?id=" + categoryId)
+    .then((response) => response.json())
+    .then((data) => {
+      document.getElementById("CategoryCode").value = data.categoryCode;
+      document.getElementById("CategoryName").value = data.categoryName;
+      document.getElementById("CategoryDescription").value =
+        data.categoryDescription;
+    });
+}
+
+function updateCategoryPost(event) {
+  event.preventDefault();
+  let form = document.getElementById("updateCategoryForm");
+  const data = new FormData(form);
+  fetch("http://localhost:5198/api/Categories/UpdateCategory", {
+    method: "PUT",
+    body: data,
+  })
+    .then((response) => console.log(response))
+    .then(() => {
+      window.location.href = "Category-index.html";
+    })
+    .catch((error) => console.log(error));
+}
+function deleteCategory(categoryCode) {
+  var result = confirm("Silmek istediğinize emin misiniz?");
+  if (result) {
+    fetch(
+      "http://localhost:5198/api/Categories/DeleteCategory?id=" + categoryCode,
+      {
+        method: "DELETE",
+      }
+    )
+      .then(() => {
+        loadCategories();
+      })
+      .catch((error) => console.log(error));
+  }
+}
+
+function Logout() {
+  // Kullanıcının token'ını localStorage veya cookie'den alabilirsiniz (bu örnekte localStorage üzerinden alındı)
+  let token = localStorage.getItem("authToken"); // Token'ı sakladığınız yer
+
+  if (!token) {
+    alert("Çıkış yapmak için bir token bulunamadı.");
+    return;
+  }
+  $.ajax({
+    url: "http://localhost:5198/api/Account/logout",
+    type: "POST",
+    dataType: "json",
+    contentType: "application/json",
+    data: JSON.stringify(token),
+    success: function (data) {
+      alert(data.message); // Başarılı mesajı göster
+      // Token'ı temizleyin ve logout sayfasına yönlendirin
+      sessionStorage.removeItem("authToken");
+      localStorage.removeItem("userEmail"); // Kullanıcı e-postasını localStorage'dan sil
+      sessionStorage.removeItem("userEmail"); // Kullanıcı adresini localStorage'dan sil
+      window.location.href = "sign-in.html"; // Logout sayfasına yönlendirme
+    },
+    error: function (xhr) {
+      var errorMessage =
+        xhr.responseJSON && xhr.responseJSON.message
+          ? xhr.responseJSON.message
+          : "Bilinmeyen bir hata oluştu";
+      console.error("Hata:", errorMessage);
+      alert("Çıkış yapılamadı: " + errorMessage);
+    },
+  });
+}

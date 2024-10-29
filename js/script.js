@@ -74,6 +74,8 @@ document.addEventListener("DOMContentLoaded", function () {
       let result = await response.json();
       if (result.userRole === 1) {
         localStorage.setItem("userEmail", email);
+        localStorage.setItem("authToken", result.data);
+        sessionStorage.setItem("authToken", result.data);
         window.location.href = "http://127.0.0.1:5500/Category-index.html";
         return;
       }

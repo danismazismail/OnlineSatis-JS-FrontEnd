@@ -46,7 +46,11 @@ document.addEventListener("DOMContentLoaded", function () {
         return; // Hatalıysa işlem yapma
       }
 
-      let token = localStorage.getItem("authToken");
+      const url = window.location.href;
+
+      // URL'deki parametreleri çözümle
+      const urlParams = new URLSearchParams(new URL(url).search);
+      let token = urlParams.get("token");
 
       // API çağrısını yap
       fetch("http://localhost:5198/api/Account/reset-password", {
