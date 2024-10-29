@@ -83,6 +83,7 @@ $(document).on("click", "#orderButton", function () {
         if (xhr.status == 200) {
           localStorage.removeItem("cart");
           alert("Sipariş başarı ile alınmıştır.");
+          sessionStorage.removeItem("selectedValue");
           location.reload();
         } else alert("Bir hata oluştu.");
       },
