@@ -15,8 +15,8 @@ document.addEventListener("DOMContentLoaded", function () {
     emailError.textContent = "";
     passwordError.textContent = "";
 
-    const email = emailInput.value.trim();
-    const password = passwordInput.value.trim();
+    let email = emailInput.value.trim();
+    let password = passwordInput.value.trim();
 
     // Basit HTML5 form doğrulaması
     if (!email || !password) {
@@ -65,13 +65,13 @@ document.addEventListener("DOMContentLoaded", function () {
             alert("Geçersiz veri");
           }
         } else if (response.status === 401) {
-          alert("Yetkisiz");
+          alert("Geçersiz kimlik bilgileri");
         } else {
           alert("Bir hata oluştu");
         }
         return;
       }
-      const result = await response.json();
+      let result = await response.json();
 
       // `data.Data`'yı kontrol et
       if (result.twoFactorRequired === true) {
@@ -82,7 +82,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
 
       // İki faktörlü doğrulama gerekmiyor
-      const token = result.data.token;
+      let token = result.data;
 
       // Token'ı localStorage veya cookie'ye kaydedin (isteğe bağlı)
       localStorage.setItem("authToken", token);

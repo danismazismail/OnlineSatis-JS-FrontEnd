@@ -43,10 +43,12 @@ $(document).ready(function () {
         }
       );
 
-      const data = await response.json();
+      let data = await response.json();
 
       if (response.ok) {
-        window.location.href = "http://127.0.0.1:5500/users.html";
+        localStorage.setItem("authToken", data);
+        sessionStorage.setItem("authToken", data);
+        window.location.href = "http://127.0.0.1:5500";
       } else {
         alert(data.Message || "Doğrulama kodu geçersiz.");
       }

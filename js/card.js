@@ -233,34 +233,33 @@ function removeItem(productCode) {
 }
 document.addEventListener("DOMContentLoaded", function () {
   // Kullanıcı e-posta bilgisi localStorage'da mevcut mu?
-  const userEmail = localStorage.getItem("userEmail");
-  const userContainer = document.getElementById("user-container");
+  let userEmail = localStorage.getItem("userEmail");
+  let userContainer = document.getElementById("user-container");
   // Eğer kullanıcı girişi yapılmışsa, dropdown'ı ekle
   if (userEmail) {
     userContainer.innerHTML = `
                <div id="user-dropdown" class="dropdown">
-                   <a
-                       href="#"
-                       class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle"
-                       data-bs-toggle="dropdown"
-                       aria-expanded="false"
-                   >
-                       <img
-                           alt=""
-                           class="rounded-circle me-2"
-                       />
-                       <strong>${userEmail}</strong>
-                   </a>
-                   <ul class="dropdown-menu text-small shadow">
-                       <li>
-                           <a class="dropdown-item" href="#">New project...</a>
-                       </li>
-                       <li><a class="dropdown-item" href="#">Settings</a></li>
-                       <li><a class="dropdown-item" href="logout.html">Ekranı Kitle</a></li>
-                       <li><hr class="dropdown-divider" /></li>
-                       <li><a class="dropdown-item" href="#">Sign out</a></li>
-                   </ul>
-               </div>
+                    <a
+                        href="#"
+                        class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                    >
+                        <img
+                            alt=""
+                            class="rounded-circle me-2"
+                        />
+                        <strong>${userEmail}</strong>
+                    </a>
+                    <ul class="dropdown-menu text-small shadow">
+                        <li>
+                            <a class="dropdown-item" href="#" onclick="Confirm2FACode()">İki Faktörlü Doğrulama Onayla</a>
+                        </li>
+                        <li><a class="dropdown-item" href="reset-password.html">Şifre Yenile</a></li>
+                        <li><hr class="dropdown-divider" /></li>
+                        <li><a class="dropdown-item" href="#" onclick="Logout()">Çıkış</a></li>
+                    </ul>
+                </div>
            `;
   } else {
     // Eğer kullanıcı girişi yapılmamışsa, giriş butonunu ekle
@@ -277,6 +276,66 @@ document.addEventListener("DOMContentLoaded", function () {
            `;
   }
 });
+function Logout() {
+  // Kullanıcının token'ını localStorage veya cookie'den alabilirsiniz (bu örnekte localStorage üzerinden alındı)
+  let token = sessionStorage.getItem("authToken"); // Token'ı sakladığınız yer
+
+  if (!token) {
+    alert("Çıkış yapmak için bir token bulunamadı.");
+    return;
+  }
+  $.ajax({
+    url: "http://localhost:5198/api/Account/logout",
+    type: "POST",
+    dataType: "json",
+    contentType: "application/json",
+    data: JSON.stringify(token),
+    success: function (data) {
+      alert(data.message); // Başarılı mesajı göster
+      // Token'ı temizleyin ve logout sayfasına yönlendirin
+      sessionStorage.removeItem("authToken");
+      localStorage.removeItem("userEmail"); // Kullanıcı e-postasını localStorage'dan sil
+      sessionStorage.removeItem("userEmail"); // Kullanıcı adresini localStorage'dan sil
+      window.location.href = "sign-in.html"; // Logout sayfasına yönlendirme
+    },
+    error: function (xhr) {
+      var errorMessage =
+        xhr.responseJSON && xhr.responseJSON.message
+          ? xhr.responseJSON.message
+          : "Bilinmeyen bir hata oluştu";
+      console.error("Hata:", errorMessage);
+      alert("Çıkış yapılamadı: " + errorMessage);
+    },
+  });
+}
+function Confirm2FACode() {
+  var userEmail = localStorage.getItem("userEmail");
+
+  // API'ye JSON formatında POST isteği atmak için fetch kullanıyoruz
+  fetch("http://localhost:5198/api/Account/Confirm2FACode", {
+    // API URL'sini buraya yazın
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json", // Gönderim tipi JSON
+    },
+    body: JSON.stringify(userEmail),
+  })
+    .then((response) => {
+      if (!response.ok) {
+        return response.json().then((error) => {
+          throw new Error(error.message);
+        });
+      }
+      return response.json();
+    })
+    .then((data) => {
+      alert("İki faktörlü doğrulama tipinizi değiştirdiniz."); // Başarılı mesajı göster
+    })
+    .catch((error) => {
+      alert("Hata: " + error.message);
+    });
+}
 class Cart {
   constructor() {
     // localStorage'dan sepet verilerini al
